@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1" />
-  <title>BloxHTML V3.1 (Stable)</title>
+  <title>BloxHTML V3.0.1 (Stable)</title>
 
   <!-- Tailwind & Libs -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -35,12 +35,6 @@
     .nametag { position: absolute; background: rgba(30,30,30,0.7); color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; transform: translate(-50%, -100%); pointer-events: none; white-space: nowrap; backdrop-filter: blur(2px); }
     .dmg-txt { position: absolute; font-weight: 900; -webkit-text-stroke: 1px black; animation: dmg 1s forwards; pointer-events: none; z-index: 100; color: #ff4757; font-size: 24px; text-shadow: 0 2px 0 black; }
     @keyframes dmg { 0% { transform: scale(1) translateY(0); opacity:1; } 100% { transform: scale(1.5) translateY(-50px); opacity:0; } }
-    
-    /* Brainrot UI */
-    .brainrot-tag { position: absolute; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px; color: white; font-family: 'Builder Sans', sans-serif; text-align: center; transform: translate(-50%, -150%); pointer-events: none; white-space: nowrap; z-index: 10; }
-    .brainrot-rarity { font-size: 10px; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 2px; }
-    .brainrot-name { font-size: 12px; font-weight: bold; }
-    .brainrot-price { color: #ffeaa7; font-size: 11px; }
 
     /* Special Effects */
     .owner-announce { position: absolute; top: 20%; left: 0; width: 100%; text-align: center; font-family: 'Creepster', cursive; font-size: 5rem; color: #ff0000; text-shadow: 0 0 20px black; pointer-events: none; animation: shake 0.5s infinite; z-index: 200; display: none; }
@@ -72,9 +66,9 @@
       <p class="text-sm text-gray-300 mb-4">Our content monitors have determined that your behavior at BloxHTML has been in violation of our Terms of Use.</p>
       <div class="bg-[#191b1d] border border-[#393b3d] p-4 text-left mb-6 rounded font-mono text-sm text-gray-400">
         <p><span class="font-bold text-white">Reviewed:</span> <span id="ban-date"></span></p>
-        <p><span class="font-bold text-white">Moderator Note:</span> <span id="ban-note">You get banned for being rude.</span></p>
+        <p><span class="font-bold text-white">Moderator Note:</span> Your account has been closed for violating the Terms of Use.</p>
         <p class="mt-2"><span class="font-bold text-white">Reason:</span> <span id="ban-reason" class="text-red-400">Harassment</span></p>
-        <p><span class="font-bold text-white">Offensive Item:</span> <span id="ban-item" class="italic text-white"></span></p>
+        <p><span class="font-bold text-white">Offensive Item:</span> <span id="ban-item" class="italic"></span></p>
       </div>
       <p class="text-xs text-gray-500 mb-6">Your account has been terminated.</p>
       <button class="rbx-btn-secondary w-full border-gray-500 text-gray-400 cursor-not-allowed">Logout (Disabled)</button>
@@ -260,8 +254,6 @@
   <!-- ================= GAME UI ================= -->
   <div id="game-ui" class="absolute inset-0 pointer-events-none z-50 font-sans">
     <div id="nametag-layer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-    <div id="brainrot-ui-layer" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-    
     <div class="absolute top-0 left-0 right-0 p-4 flex justify-between items-start pointer-events-none">
       <div class="flex flex-col gap-2 pointer-events-auto">
         <button onclick="Engine.toggleMenu()" class="bg-[#191b1d]/80 hover:bg-[#232527] text-white w-8 h-8 rounded flex items-center justify-center backdrop-blur pointer-events-auto cursor-pointer">
@@ -281,7 +273,7 @@
     <div id="toast-area" class="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col gap-2 items-center w-full max-w-xl pointer-events-none"></div>
 
     <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 w-full max-w-lg pointer-events-none">
-        <div id="interact-prompt" class="bg-black/70 text-white px-4 py-1 rounded font-bold mb-2 hidden"></div>
+        <div id="interact-prompt" class="bg-black/70 text-white px-4 py-1 rounded font-bold mb-2 hidden">E - Interact</div>
         <div class="flex items-center gap-2 w-full px-4">
             <div class="text-red-500 font-black text-xl w-8">HP <span id="hp-val" class="text-sm text-white ml-1 font-normal hidden">100</span></div>
             <div class="h-4 bg-gray-800 flex-1 rounded skew-x-[-12deg] overflow-hidden border border-gray-600">
@@ -289,6 +281,7 @@
             </div>
         </div>
         <div id="hotbar-container" class="flex gap-1 pointer-events-auto mt-1"></div>
+        <div class="text-[10px] text-white/50 bg-black/50 px-2 rounded">Shift: Lock | Ctrl: Run</div>
     </div>
     
     <div class="absolute top-4 left-4 w-72 flex flex-col gap-1 pointer-events-auto">
@@ -330,23 +323,23 @@
       fov: 75,
       colors: { sky: 0x7ec0ee, night: 0x0a0a1a },
       games: [
-        { id: 1, title: 'Steal a Brainrot', type: 'brainrot', players: '12k', color: '#8e44ad' },
+        { id: 1, title: 'Steal a Brainrot', type: 'brainrot', players: '12M', color: '#8e44ad' },
         { id: 2, title: 'Tower of Hell', type: 'obby', players: '45k', color: '#e74c3c' },
         { id: 3, title: 'Brookhaven RP', type: 'city', players: '300k', color: '#2980b9' },
         { id: 4, title: 'Zombie Rush', type: 'zombie', players: '8k', color: '#2c3e50' }
       ],
       brainrots: [
-          { name: 'Toilet Head', color: 0xffffff, scale: 1, rarity: 'Common', price: 100, income: 1 },
-          { name: 'Camera Man', color: 0x333333, scale: 1.1, rarity: 'Common', price: 150, income: 2 },
-          { name: 'Speaker Guy', color: 0x555555, scale: 1, rarity: 'Common', price: 200, income: 3 },
-          { name: 'Rizzler', color: 0x000000, scale: 1.2, rarity: 'Uncommon', price: 500, income: 5 },
-          { name: 'Fanum', color: 0x00ff00, scale: 1.5, rarity: 'Uncommon', price: 700, income: 7 },
-          { name: 'Sigma', color: 0x888888, scale: 1.5, rarity: 'Rare', price: 2000, income: 20 },
-          { name: 'Giga Chad', color: 0xffd700, scale: 2, rarity: 'Rare', price: 2500, income: 25 },
-          { name: 'Grimace', color: 0x800080, scale: 2.5, rarity: 'Legendary', price: 10000, income: 100 },
-          { name: 'OMEGA NUGGET', color: 0xeebefa, scale: 0.5, rarity: 'GODLY', price: 100000, income: 1000 },
-          { name: 'GLITCH TOILET', color: 0xff0000, scale: 3, rarity: 'GODLY', price: 150000, income: 1500 },
-          { name: 'BLUE SMURF', color: 0x0000ff, scale: 0.2, rarity: 'GODLY', price: 200000, income: 2000 }
+          { name: 'Toilet Head', color: 0xffffff, scale: 1, rarity: 'Common' },
+          { name: 'Camera Man', color: 0x333333, scale: 1.1, rarity: 'Common' },
+          { name: 'Speaker Guy', color: 0x555555, scale: 1, rarity: 'Common' },
+          { name: 'Rizzler', color: 0x000000, scale: 1.2, rarity: 'Uncommon' },
+          { name: 'Fanum', color: 0x00ff00, scale: 1.5, rarity: 'Uncommon' },
+          { name: 'Sigma', color: 0x888888, scale: 1.5, rarity: 'Rare' },
+          { name: 'Giga Chad', color: 0xffd700, scale: 2, rarity: 'Rare' },
+          { name: 'Grimace', color: 0x800080, scale: 2.5, rarity: 'Legendary' },
+          { name: 'OMEGA NUGGET', color: 0xeebefa, scale: 0.5, rarity: 'GODLY' },
+          { name: 'GLITCH TOILET', color: 0xff0000, scale: 3, rarity: 'GODLY' },
+          { name: 'BLUE SMURF', color: 0x0000ff, scale: 0.2, rarity: 'GODLY' }
       ]
     };
 
@@ -364,9 +357,7 @@
         inventory: [], equippedIdx: -1,
         wave: 1, zombiesRemaining: 0,
         settings: { sens: 0.002 },
-        strikes: 0, banned: false, banReason: "", banItem: "", banDate: "",
-        brainrotBase: { owned: [] },
-        holdingE: null
+        strikes: 0, banned: false
     };
 
     const fbConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
@@ -432,10 +423,8 @@
         const u = document.getElementById('su-username').value.trim();
         if(u.length < 3) return alert('Username too short');
         
-        if(Sentinel.checkToxicity(u)) { Sentinel.punish("Inappropriate Username"); return; }
-
         // Simulating check
-        if (u.toLowerCase() === 'roblox' || u.toLowerCase() === 'admin') {
+        if (u === 'Roblox' || u === 'Admin') {
             document.getElementById('su-error').innerText = `Username taken! Try: ${u}${Math.floor(Math.random()*100)}`;
             document.getElementById('su-error').classList.remove('hidden');
             return;
@@ -447,13 +436,12 @@
       attemptLogin: () => {
         const u = document.getElementById('li-username').value.trim();
         if(u === State.user) window.App.enter(); // Local check
-        else alert("User not found locally.");
+        else alert("User not found on this device.");
       },
       
       quickLogin: (u) => { State.user = u; window.App.enter(); },
 
       enter: () => {
-        if (!Sentinel.checkAccountStatus()) return;
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('dashboard').classList.remove('hidden');
         window.App.updateDashUI();
@@ -473,34 +461,14 @@
       },
 
       logout: () => { State.user = null; window.App.saveData(); location.reload(); },
-      showBanScreen: (reason, item, date, title="Account Deleted") => {
-            document.getElementById('ban-screen').style.display = 'flex';
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('game-ui').style.display = 'none';
-            document.getElementById('ban-header').innerText = title;
-            document.getElementById('ban-reason').innerText = reason;
-            document.getElementById('ban-item').innerText = item;
-            document.getElementById('ban-date').innerText = date;
-            
-            setInterval(() => {
-                const data = JSON.parse(localStorage.getItem('blox_ban_data'));
-                if(data) {
-                    const left = data.endTime - Date.now();
-                    if(left <= 0) location.reload();
-                    const h = Math.floor(left / 3600000);
-                    const m = Math.floor((left % 3600000) / 60000);
-                    const s = Math.floor((left % 60000) / 1000);
-                    document.getElementById('ban-timer').innerText = `Time remaining: ${h}:${m}:${s}`;
-                }
-            }, 1000);
-      },
+      showBanScreen: (reason, item) => { document.getElementById('ban-screen').style.display = 'flex'; },
       saveData: () => { localStorage.setItem('blox_v2_data', JSON.stringify(State)); if(State.user) window.App.updateDashUI(); },
       setAvatarColor: (prop, color) => { State.avatar[prop] = color; window.App.updateDashUI(); },
-      updateDashUI: () => { 
-            document.getElementById('dash-user').innerText = State.user; 
-            document.getElementById('dash-coins').innerText = State.coins; 
-            window.App.updatePreview(); 
+      updateDashUI: () => {
+        document.getElementById('dash-user').innerText = State.user;
+        document.getElementById('dash-coins').innerText = State.coins.toLocaleString();
+        document.getElementById('dash-av-face').style.backgroundColor = State.avatar.skin;
+        window.App.updatePreview();
       },
       updatePreview: () => {
         const isGirl = State.avatar.gender === 'girl';
@@ -518,7 +486,13 @@
         else { torso.style.width = '70%'; torso.style.left = '15%'; hair.classList.add('hidden'); }
       },
       view: (id) => { ['home','avatar','shop','create'].forEach(v => document.getElementById('view-'+v).classList.add('hidden')); document.getElementById('view-'+id).classList.remove('hidden'); },
-      renderGames: () => { document.getElementById('games-grid').innerHTML = CONFIG.games.map(g => `<div onclick="Engine.launch(${g.id})" class="bg-[#232527] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition group"><div class="h-32 bg-[${g.color}] relative overflow-hidden"><div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition"></div></div><div class="p-3"><h3 class="font-bold text-white text-base truncate leading-tight">${g.title}</h3><div class="flex justify-between items-center mt-2"><p class="text-xs text-gray-500">93% 👍</p><div class="text-xs text-gray-400 flex items-center gap-1">👥 ${g.players}</div></div></div></div>`).join(''); },
+      renderGames: () => {
+        document.getElementById('games-grid').innerHTML = CONFIG.games.map(g => `
+          <div onclick="Engine.launch(${g.id})" class="bg-[#232527] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition group">
+            <div class="h-32 bg-[${g.color}] relative overflow-hidden"><div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition"></div></div>
+            <div class="p-3"><h3 class="font-bold text-white text-base truncate leading-tight">${g.title}</h3><div class="flex justify-between items-center mt-2"><p class="text-xs text-gray-500">93% 👍</p><div class="text-xs text-gray-400 flex items-center gap-1">👥 ${g.players}</div></div></div>
+          </div>`).join('');
+      },
       renderAvatarEditor: () => {
         const colors = ['#F5CBA7','#5c3a21','#e74c3c','#2980b9','#27ae60','#f1c40f','#8e44ad','#ecf0f1','#2c3e50','#111'];
         const makeDots = (pid, prop) => { document.getElementById(pid).innerHTML = colors.map(c => `<div onclick="App.setAvatarColor('${prop}', '${c}')" class="w-8 h-8 rounded-full cursor-pointer hover:scale-110 transition border-2 border-transparent hover:border-white" style="background:${c}"></div>`).join(''); };
@@ -550,305 +524,231 @@
       openCreator: () => { alert("Use the external Creator Studio file to design items, then upload the PNG here!"); },
       openStudio: () => { window.App.openCreator(); }
     };
-    
-    /* --- SENTINEL AI V3 --- */
-    const Sentinel = {
-        terms: ['cheat','hack','spam','stupid','idiot','bad','kill','die','hate','admin','mod','owner','discord','skibidi'],
-        normalize: (text) => text.toLowerCase().replace(/[^a-z]/g, ''),
-        filter: (text) => {
-            let clean = text;
-            Sentinel.terms.forEach(w => { const reg = new RegExp(`\\b${w}\\b`, "gi"); clean = clean.replace(reg, "#".repeat(w.length)); });
-            return clean;
-        },
-        checkToxicity: (text) => {
-            let score = 0;
-            const norm = Sentinel.normalize(text);
-            for(let w of Sentinel.terms) if(norm.includes(w)) score += 2;
-            return score;
-        },
-        checkAccountStatus: () => {
-            const banData = JSON.parse(localStorage.getItem('blox_ban_data'));
-            if (banData && banData.endTime > Date.now()) {
-                window.App.showBanScreen(banData.reason, "Chat", new Date(banData.endTime).toLocaleString(), banData.title);
-                return false;
-            }
-            return true;
-        },
-        punish: (reason) => {
-            let banData = JSON.parse(localStorage.getItem('blox_ban_data')) || { offenses: 0 };
-            banData.offenses++;
-            let duration = 0;
-            let title = "";
-            
-            if (banData.offenses === 1) { duration = 86400000; title = "Banned for 1 Day"; } // 1 day
-            else if (banData.offenses === 2) { duration = 259200000; title = "Banned for 3 Days"; } // 3 days
-            else if (banData.offenses === 3) { duration = 604800000; title = "Banned for 7 Days"; } // 7 days
-            else { duration = 3153600000000; title = "Account Deleted"; } // Perm
-            
-            banData.endTime = Date.now() + duration;
-            banData.reason = reason;
-            banData.title = title;
-            
-            localStorage.setItem('blox_ban_data', JSON.stringify(banData));
-            window.App.showBanScreen(reason, "Chat", new Date(banData.endTime).toLocaleString(), title);
-            if(window.Engine.running) window.Engine.exit();
-        }
-    };
 
     /* --- ENGINE --- */
     window.Engine = {
-      running: false, scene: null, camera: null, renderer: null, player: null, 
-      world: { colliders: [], zombies: [], movingParts: [], items: [], brainrotEntities: [] },
-      remotePlayers: new Map(), listeners: [],
-      physics: { gravity: 0.015, friction: 0.80, speed: 0.5, jump: 0.35 }, 
-      input: { w:0, a:0, s:0, d:0, sp:0, shift:0, e:0 }, time: 0,
+      running: false, scene: null, camera: null, renderer: null, player: null, world: { colliders: [], brainrots: [], movingParts: [], items: [] }, remotePlayers: new Map(), listeners: [],
+      physics: { gravity: 0.015, friction: 0.80, speed: 0.5, jump: 0.35 }, input: { w:0, a:0, s:0, d:0, sp:0, shift:0, e:0 }, time: 0,
       
       launch: async (gid) => {
-        if (!Sentinel.checkAccountStatus()) return;
+        if (!State.user) return;
         const gameData = CONFIG.games.find(g => g.id === gid); if (!gameData) return;
-        State.currentId = gid; 
-        
-        // Reset World
-        window.Engine.world = { colliders: [], zombies: [], movingParts: [], items: [], brainrotEntities: [] };
-        
-        document.getElementById('dashboard').classList.add('hidden'); 
-        document.getElementById('game-ui').style.display = 'block'; 
-        document.getElementById('viewport').classList.remove('hidden');
-        
-        window.Engine.initThree();
-        window.Engine.buildWorld(gameData.type);
-        window.Engine.createPlayer();
-        
-        // Brainrot specific setup
-        if (gid === 1) {
-            window.Engine.initBrainrotGame();
-        }
-
+        State.currentId = gid; State.wave = 1; State.zombiesRemaining = 0;
+        State.inventory = gid === 3 ? [ITEMS.car, ITEMS.flashlight] : (gid === 4 ? [ITEMS.gun, ITEMS.sword] : []);
+        window.Engine.renderHotbar(); window.Engine.equip(-1);
+        document.getElementById('dashboard').classList.add('hidden'); document.getElementById('game-ui').style.display = 'block'; document.getElementById('viewport').classList.remove('hidden'); document.getElementById('loader').classList.remove('hidden');
+        window.Engine.initThree(); window.Engine.buildWorld(gameData.type); window.Engine.createPlayer();
         if (State.netEnabled) window.Engine.connect(gid);
+        
+        // Brainrot Logic
+        if (gid === 1) window.Engine.spawnBrainrots();
+        // Owner Effect
+        if (State.isOwner) { document.getElementById('owner-effect').style.display = 'block'; setTimeout(() => document.getElementById('owner-effect').style.display = 'none', 3000); }
+
         window.Engine.running = true; window.Engine.loop();
-        
-        document.getElementById('loader').classList.add('hidden');
-        window.addEventListener('keydown', window.Engine.handleKey);
-        window.addEventListener('keyup', window.Engine.handleKey);
-        document.getElementById('viewport').addEventListener('mousedown', () => { if (!State.menuOpen && document.pointerLockElement !== document.body) { } if(!State.menuOpen) window.Engine.action(); });
+        setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+        window.addEventListener('keydown', window.Engine.handleKey); window.addEventListener('keyup', window.Engine.handleKey);
+        document.getElementById('viewport').addEventListener('mousedown', () => { if (!State.menuOpen && document.pointerLockElement !== document.body) {} if(!State.menuOpen) window.Engine.action(); });
         document.getElementById('chat-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') window.Engine.sendChat(); e.stopPropagation(); });
-        
-        // Income Interval
-        setInterval(() => {
-            if(State.currentId === 1 && window.Engine.running) {
-                let income = 0;
-                State.brainrotBase.owned.forEach(br => income += br.income);
-                if(income > 0) {
-                    State.coins += income;
-                    window.Engine.toast(`+$${income}`, '#00e085');
-                }
-            }
-        }, 1000);
       },
-
-      initBrainrotGame: () => {
-          // Spawn Walkway
-          const path = new THREE.Mesh(new THREE.PlaneGeometry(200, 20), new THREE.MeshStandardMaterial({color: 0x555555}));
-          path.rotation.x = -Math.PI/2; path.position.y = 0.1;
-          window.Engine.scene.add(path);
-          
-          // Spawn Base Plots (Visual)
-          for(let i=0; i<5; i++) {
-             const plot = new THREE.Mesh(new THREE.PlaneGeometry(15, 15), new THREE.MeshStandardMaterial({color: 0x222222}));
-             plot.rotation.x = -Math.PI/2;
-             plot.position.set((i-2)*20, 0.1, 15);
-             window.Engine.scene.add(plot);
+      exit: () => {
+        window.Engine.running = false; window.Engine.listeners.forEach(u => u());
+        if(window.Engine.renderer) { window.Engine.renderer.dispose(); document.getElementById('viewport').innerHTML = ''; }
+        if(document.pointerLockElement) document.exitPointerLock();
+        document.getElementById('game-ui').style.display = 'none'; document.getElementById('viewport').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); document.getElementById('esc-menu').classList.add('hidden');
+        State.menuOpen = false; window.Engine.world = { colliders: [], brainrots: [], movingParts: [], items: [] };
+      },
+      toggleMenu: () => {
+        State.menuOpen = !State.menuOpen; const el = document.getElementById('esc-menu');
+        if (State.menuOpen) { el.classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); } else { el.classList.add('hidden'); }
+      },
+      setSens: (val) => { State.settings.sens = val * 0.0005; },
+      initThree: () => {
+        const vp = document.getElementById('viewport');
+        window.Engine.scene = new THREE.Scene(); window.Engine.scene.background = new THREE.Color(CONFIG.colors.sky); window.Engine.scene.fog = new THREE.Fog(CONFIG.colors.sky, 20, 150);
+        window.Engine.camera = new THREE.PerspectiveCamera(CONFIG.fov, window.innerWidth / window.innerHeight, 0.1, 1000);
+        window.Engine.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+        window.Engine.renderer.setSize(window.innerWidth, window.innerHeight); window.Engine.renderer.shadowMap.enabled = true; vp.appendChild(window.Engine.renderer.domElement);
+        const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6); window.Engine.scene.add(hemi);
+        const dir = new THREE.DirectionalLight(0xffffff, 0.8); dir.position.set(50, 100, 50); dir.castShadow = true; dir.shadow.mapSize.set(2048, 2048);
+        window.Engine.scene.add(dir); window.Engine.light = dir;
+        window.addEventListener('resize', () => { window.Engine.camera.aspect = window.innerWidth / window.innerHeight; window.Engine.camera.updateProjectionMatrix(); window.Engine.renderer.setSize(window.innerWidth, window.innerHeight); });
+      },
+      buildWorld: (type) => {
+        const tex = new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/terrain/grasslight-big.jpg');
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(50, 50);
+        const floor = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), new THREE.MeshStandardMaterial({ map: tex, color: 0x555555 }));
+        floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; window.Engine.scene.add(floor);
+        const addBlock = (x, y, z, w, h, d, color, isKill=false) => {
+          const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial({color}));
+          m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true; window.Engine.scene.add(m);
+          m.userData.aabb = new THREE.Box3().setFromObject(m); m.userData.kill = isKill;
+          window.Engine.world.colliders.push(m); return m;
+        };
+        if (type === 'city') {
+          const road = new THREE.Mesh(new THREE.PlaneGeometry(40, 500), new THREE.MeshStandardMaterial({color:0x333333}));
+          road.rotation.x = -Math.PI/2; road.position.y = 0.05; window.Engine.scene.add(road);
+          for(let i=0; i<20; i++) { 
+              const z = (i-10)*30; 
+              // Improved Building Collisions (Thicker walls)
+              const w = 30, h = 20, d = 20;
+              addBlock(40, h/2, z, w, h, d, 0xbdc3c7); 
+              addBlock(-40, h/2, z, w, h, d, 0x34495e); 
           }
-
-          // Brainrot Spawner Loop
-          setInterval(() => {
-              if(!window.Engine.running) return;
-              // Taco Tuesday Check
-              const d = new Date();
-              const isTaco = d.getDay()===2 && d.getHours()===10;
-              
-              if(Math.random() > (isTaco ? 0.2 : 0.5)) { // Spawn rate
-                  window.Engine.spawnBrainrotWalker();
-              }
-          }, 3000);
+        } else if (type === 'brainrot') {
+             // Forest Map
+             for(let i=0; i<100; i++) { const x = (Math.random()-0.5)*400, z = (Math.random()-0.5)*400; addBlock(x, 3, z, 1.5, 6, 1.5, 0x5d4037); addBlock(x, 7, z, 5, 4, 5, 0x27ae60); }
+        } else if (type === 'obby') {
+          addBlock(0,0.5,0, 10,1,10, 0xffffff); let cx=0, cy=2, cz=0;
+          for(let i=0; i<50; i++) {
+            cz -= 8 + Math.random()*2; cy += Math.random() * 2;
+            if (i % 5 === 0) {
+                const w = 4; const p = addBlock(cx, cy, cz, w, 0.5, w, 0xf1c40f);
+                window.Engine.world.movingParts.push({ mesh: p, start: cx, range: 10, speed: 0.05 + Math.random()*0.05, offset: Math.random()*Math.PI });
+                window.Engine.world.colliders.pop(); 
+            } else { const isKill = Math.random() < 0.3; addBlock(cx, cy, cz, 4, 0.5, 4, isKill ? 0xff4757 : 0x3498db, isKill); }
+          }
+        } else if (type === 'zombie') { addBlock(0, 2, 50, 100, 4, 1, 0x333); addBlock(0, 2, -50, 100, 4, 1, 0x333); addBlock(50, 2, 0, 1, 4, 100, 0x333); addBlock(-50, 2, 0, 1, 4, 100, 0x333); }
       },
-
-      spawnBrainrotWalker: () => {
-          // Select Rarity
-          const rand = Math.random() * 100;
-          let rarity = 'Common';
-          if (rand < 1) rarity = 'GODLY';
-          else if (rand < 5) rarity = 'Legendary';
-          else if (rand < 15) rarity = 'Rare';
-          else if (rand < 40) rarity = 'Uncommon';
-          
-          const possible = CONFIG.brainrots.filter(b => b.rarity === rarity);
-          const data = possible[Math.floor(Math.random() * possible.length)];
-          
-          const mesh = new THREE.Mesh(new THREE.BoxGeometry(2,3,1), new THREE.MeshStandardMaterial({color: data.color}));
-          mesh.position.set(-90, 2.5, 0); // Start left
-          window.Engine.scene.add(mesh);
-          
-          const entity = { mesh, data, active: true };
-          window.Engine.world.brainrotEntities.push(entity);
+      createPlayer: () => {
+        const grp = new THREE.Group(); const mat = (c) => new THREE.MeshStandardMaterial({color:c});
+        const isGirl = State.avatar.gender === 'girl';
+        const head = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), mat(State.avatar.skin)); head.position.y=1.5;
+        const bodyW = isGirl ? 1.5 : 2; const bodyCol = mat(State.avatar.torso);
+        const body = new THREE.Mesh(new THREE.BoxGeometry(bodyW,2,1), bodyCol); body.position.y=0;
+        const armX = isGirl ? 1.1 : 1.4;
+        const la = new THREE.Mesh(new THREE.BoxGeometry(0.8,2,0.8), mat(State.avatar.skin)); la.position.set(-armX,0,0);
+        const ra = new THREE.Mesh(new THREE.BoxGeometry(0.8,2,0.8), mat(State.avatar.skin)); ra.position.set(armX,0,0);
+        const legX = isGirl ? 0.4 : 0.5;
+        const ll = new THREE.Mesh(new THREE.BoxGeometry(0.9,2,0.9), mat(State.avatar.legs)); ll.position.set(-legX,-2,0);
+        const rl = new THREE.Mesh(new THREE.BoxGeometry(0.9,2,0.9), mat(State.avatar.legs)); rl.position.set(legX,-2,0);
+        [head,body,la,ra,ll,rl].forEach(m=>m.castShadow=true);
+        grp.add(head,body,la,ra,ll,rl);
+        grp.userData = { la, ra, ll, rl }; grp.position.y = 3; window.Engine.scene.add(grp);
+        window.Engine.player = { mesh: grp, pos: new THREE.Vector3(0,10,0), vel: new THREE.Vector3(), rot: 0, grounded: false, health: 100 };
       },
-
-      updateBrainrots: () => {
-          // Move and Render UI
-          const layer = document.getElementById('brainrot-ui-layer');
-          layer.innerHTML = ''; // Clear frame
-          
-          const p = window.Engine.player.pos;
-          const promptEl = document.getElementById('interact-prompt');
-          let showPrompt = false;
-
-          for (let i = window.Engine.world.brainrotEntities.length - 1; i >= 0; i--) {
-              const ent = window.Engine.world.brainrotEntities[i];
-              if(!ent.active) continue;
-
-              // Move Right
-              ent.mesh.position.x += 0.1; 
-              if (ent.mesh.position.x > 90) { // Despawn
-                  window.Engine.scene.remove(ent.mesh);
-                  window.Engine.world.brainrotEntities.splice(i, 1);
-                  continue;
-              }
-
-              // UI Projection
-              const v = ent.mesh.position.clone().add(new THREE.Vector3(0, 3, 0));
-              v.project(window.Engine.camera);
-              const x = (v.x * .5 + .5) * window.innerWidth;
-              const y = (-(v.y * .5) + .5) * window.innerHeight;
-              
-              if(v.z < 1 && x > 0 && x < window.innerWidth && y > 0 && y < window.innerHeight) {
-                  const tag = document.createElement('div');
-                  tag.className = 'brainrot-tag';
-                  tag.style.left = x + 'px'; tag.style.top = y + 'px';
-                  tag.innerHTML = `<span class="brainrot-rarity" style="color:${ent.data.color}">${ent.data.rarity}</span><div class="brainrot-name">${ent.data.name}</div><div class="brainrot-price">$${ent.data.price}</div>`;
-                  layer.appendChild(tag);
-              }
-
-              // Interact Logic
-              if (Math.abs(ent.mesh.position.x - p.x) < 5 && Math.abs(ent.mesh.position.z - p.z) < 10) {
-                  showPrompt = true;
-                  promptEl.innerText = `Hold E to Buy ($${ent.data.price})`;
-                  promptEl.classList.remove('hidden');
-                  
-                  if (State.holdingE && (Date.now() - State.holdingE > 500)) {
-                      window.Engine.buyBrainrot(ent, i);
-                      State.holdingE = null; // Reset
-                  }
+      spawnBrainrots: () => {
+          CONFIG.brainrots.forEach(br => {
+             for(let i=0; i<3; i++) {
+                 const geo = new THREE.BoxGeometry(br.scale, br.scale*2, br.scale);
+                 const mat = new THREE.MeshStandardMaterial({color: br.color});
+                 const m = new THREE.Mesh(geo, mat);
+                 m.position.set((Math.random()-0.5)*50, 2, (Math.random()-0.5)*50);
+                 window.Engine.scene.add(m);
+                 window.Engine.world.brainrots.push({ mesh: m, data: br });
+             }
+          });
+          const d = new Date();
+          if (d.getDay() === 2 && d.getHours() >= 10 && d.getHours() < 11) {
+              window.Engine.toast("IT'S TACO TUESDAY! TACOS SPAWNED!", '#f1c40f');
+              for(let i=0;i<20;i++) {
+                  const t = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshStandardMaterial({color:0xffd700}));
+                  t.position.set((Math.random()-0.5)*50, 1, (Math.random()-0.5)*50);
+                  window.Engine.scene.add(t);
+                  window.Engine.world.items.push(t);
               }
           }
-          if (!showPrompt) promptEl.classList.add('hidden');
       },
-
-      buyBrainrot: (ent, idx) => {
-          if (State.coins >= ent.data.price) {
-              if (State.brainrotBase.owned.length < 5) { // Slot limit
-                  State.coins -= ent.data.price;
-                  window.Engine.toast(`Bought ${ent.data.name}!`, '#00e085');
-                  
-                  // Move to base slot (Visual)
-                  const slotIdx = State.brainrotBase.owned.length;
-                  ent.mesh.position.set((slotIdx-2)*20, 2.5, 15);
-                  ent.active = false; // Stop moving
-                  
-                  // Add to owned state
-                  State.brainrotBase.owned.push(ent.data);
-                  
-                  // Remove from walker list but keep mesh in scene
-                  window.Engine.world.brainrotEntities.splice(idx, 1);
-              } else {
-                  window.Engine.toast("Base Full!", '#ff4757');
-              }
-          } else {
-              window.Engine.toast("Too Expensive!", '#ff4757');
-          }
-      },
-
-      // ... (Standard Engine Methods: exit, toggleMenu, setSens, initThree, buildWorld, createPlayer, handleKey) ...
-      // Keeping loop concise to include brainrot update
-      
-      loop: () => {
-        if(!window.Engine.running) return; requestAnimationFrame(window.Engine.loop);
-        
-        // Brainrot specific update
-        if(State.currentId === 1) window.Engine.updateBrainrots();
-
-        const p = window.Engine.player; const inp = window.Engine.input; const cfg = window.Engine.physics;
-        window.Engine.time += 0.0005; const sunY = Math.sin(window.Engine.time); const skyCol = new THREE.Color().lerpColors(new THREE.Color(CONFIG.colors.night), new THREE.Color(CONFIG.colors.sky), Math.max(0, sunY));
-        window.Engine.scene.background = skyCol; window.Engine.scene.fog.color = skyCol; window.Engine.light.intensity = Math.max(0.1, sunY);
-        
-        let dx = 0, dz = 0; if (inp.w) { dx -= Math.sin(p.rot); dz -= Math.cos(p.rot); } if (inp.s) { dx += Math.sin(p.rot); dz += Math.cos(p.rot); } if (inp.a) { dx -= Math.cos(p.rot); dz += Math.sin(p.rot); } if (inp.d) { dx += Math.cos(p.rot); dz -= Math.sin(p.rot); }
-        p.vel.x += dx * 0.1; p.vel.z += dz * 0.1; p.vel.x *= cfg.friction; p.vel.z *= cfg.friction; p.vel.y -= cfg.gravity;
-        if (p.grounded && inp.sp) { p.vel.y = cfg.jump; p.grounded = false; }
-        p.pos.x += p.vel.x; p.pos.z += p.vel.z; p.pos.y += p.vel.y;
-
-        let groundY = -999; if(p.pos.y <= 3) groundY = 3; 
-        
-        // Collisions
-        for (let obj of window.Engine.world.colliders) {
-            // ... (Standard collision logic)
-             const b = obj.userData.aabb; if (p.pos.x > b.min.x - 1 && p.pos.x < b.max.x + 1 && p.pos.z > b.min.z - 1 && p.pos.z < b.max.z + 1) { if (p.vel.y <= 0 && p.pos.y - 3 >= b.max.y - 0.5 && p.pos.y - 3 <= b.max.y + 0.5) { const ly = b.max.y + 3; if (ly > groundY) { groundY = ly; if (obj.userData.kill) window.Engine.respawn(); } } }
-        }
-
-        if (p.pos.y <= groundY) { p.pos.y = groundY; p.vel.y = 0; p.grounded = true; } else p.grounded = false;
-        if (p.pos.y < -50) window.Engine.respawn();
-        
-        p.mesh.position.copy(p.pos); p.mesh.rotation.y = p.rot + Math.PI;
-        window.Engine.camera.position.set(p.pos.x + Math.sin(p.rot) * 10, p.pos.y + 5, p.pos.z + Math.cos(p.rot) * 10);
-        window.Engine.camera.lookAt(p.pos.x, p.pos.y + 2, p.pos.z);
-        
-        window.Engine.renderNametags();
-        window.Engine.renderer.render(window.Engine.scene, window.Engine.camera);
-      },
-      
       handleKey: (e) => {
         if(e.target.tagName === 'INPUT') return;
-        const s = e.type === 'keydown' ? 1 : 0;
-        const k = e.key.toLowerCase();
-        
-        if (k==='e') {
-            if (s) { if (!State.holdingE) State.holdingE = Date.now(); } 
-            else { State.holdingE = null; }
-        }
-        // ... (Existing key logic)
         if (e.key === '/') { e.preventDefault(); const ci = document.getElementById('chat-input'); ci.focus(); setTimeout(() => ci.value = '', 1); return; }
         if (e.key === 'Shift' && e.type === 'keydown') { if (document.pointerLockElement) { document.exitPointerLock(); document.getElementById('lock-status').classList.add('hidden'); } else { document.body.requestPointerLock(); document.getElementById('lock-status').classList.remove('hidden'); } }
         if (e.type === 'keydown' && ['1','2','3','4','5'].includes(e.key)) { window.Engine.equip(parseInt(e.key) - 1); return; }
         const s = e.type === 'keydown' ? 1 : 0; const k = e.key.toLowerCase();
         if (k==='w') window.Engine.input.w = s; if (k==='a') window.Engine.input.a = s; if (k==='s') window.Engine.input.s = s; if (k==='d') window.Engine.input.d = s; if (k===' ') window.Engine.input.sp = s; if (k==='control') window.Engine.input.shift = s; if (k==='e' && s) window.Engine.interact(); if (k==='escape' && s) window.Engine.toggleMenu();
       },
-
-      // ... (Preserve other Engine methods: exit, toggleMenu, setSens, initThree, buildWorld, createPlayer, netSync, sendChat, etc.)
-      exit: () => {
-        window.Engine.running = false; window.Engine.listeners.forEach(u => u());
-        if(window.Engine.renderer) { window.Engine.renderer.dispose(); document.getElementById('viewport').innerHTML = ''; }
-        if(document.pointerLockElement) document.exitPointerLock();
-        document.getElementById('game-ui').style.display = 'none'; document.getElementById('viewport').classList.add('hidden'); document.getElementById('dashboard').classList.remove('hidden'); document.getElementById('esc-menu').classList.add('hidden');
-        State.menuOpen = false; window.Engine.world = { colliders: [], zombies: [], movingParts: [], items: [], brainrotEntities: [] };
+      loop: () => {
+        if(!window.Engine.running) return; requestAnimationFrame(window.Engine.loop);
+        const p = window.Engine.player; const inp = window.Engine.input; const cfg = window.Engine.physics; const item = State.inventory[State.equippedIdx];
+        window.Engine.time += 0.0005; const sunY = Math.sin(window.Engine.time); const skyCol = new THREE.Color().lerpColors(new THREE.Color(CONFIG.colors.night), new THREE.Color(CONFIG.colors.sky), Math.max(0, sunY));
+        window.Engine.scene.background = skyCol; window.Engine.scene.fog.color = skyCol; window.Engine.light.intensity = Math.max(0.1, sunY); window.Engine.light.position.y = sunY * 100; window.Engine.light.position.x = Math.cos(window.Engine.time) * 100;
+        let baseSpeed = cfg.speed; if (item && item.type === 'vehicle') baseSpeed *= 3; const speed = inp.shift ? baseSpeed * 1.5 : baseSpeed;
+        let dx = 0, dz = 0; if (inp.w) { dx -= Math.sin(p.rot); dz -= Math.cos(p.rot); } if (inp.s) { dx += Math.sin(p.rot); dz += Math.cos(p.rot); } if (inp.a) { dx -= Math.cos(p.rot); dz += Math.sin(p.rot); } if (inp.d) { dx += Math.cos(p.rot); dz -= Math.sin(p.rot); }
+        p.vel.x += dx * 0.1; p.vel.z += dz * 0.1; p.vel.x *= cfg.friction; p.vel.z *= cfg.friction; p.vel.y -= cfg.gravity;
+        if (p.grounded && inp.sp) { p.vel.y = cfg.jump; p.grounded = false; }
+        p.pos.x += p.vel.x; p.pos.z += p.vel.z; p.pos.y += p.vel.y;
+        let groundY = -999; if(p.pos.y <= 3) groundY = 3;
+        for (let obj of window.Engine.world.colliders) { const b = obj.userData.aabb; if (p.pos.x > b.min.x - 1 && p.pos.x < b.max.x + 1 && p.pos.z > b.min.z - 1 && p.pos.z < b.max.z + 1) { if (p.vel.y <= 0 && p.pos.y - 3 >= b.max.y - 0.5 && p.pos.y - 3 <= b.max.y + 0.5) { const ly = b.max.y + 3; if (ly > groundY) { groundY = ly; if (obj.userData.kill) window.Engine.respawn(); } } } }
+        for (let mp of window.Engine.world.movingParts) { mp.mesh.position.x = mp.start + Math.sin(Date.now() * 0.001 * mp.speed + mp.offset) * mp.range; const mx = mp.mesh.position.x, my = mp.mesh.position.y, mz = mp.mesh.position.z; const hw = 2; if (p.pos.x > mx - hw - 1 && p.pos.x < mx + hw + 1 && p.pos.z > mz - hw - 1 && p.pos.z < mz + hw + 1) { if (p.vel.y <= 0 && p.pos.y - 3 >= my + 0.25 - 0.5 && p.pos.y - 3 <= my + 0.25 + 0.5) { const ly = my + 0.25 + 3; if (ly > groundY) { groundY = ly; p.pos.x += (mx - (mp.lastX || mx)); } } } mp.lastX = mx; }
+        if (p.pos.y <= groundY) { p.pos.y = groundY; p.vel.y = 0; p.grounded = true; } else p.grounded = false;
+        if (p.pos.y < -50) window.Engine.respawn();
+        const isMoving = Math.abs(p.vel.x) > 0.05 || Math.abs(p.vel.z) > 0.05;
+        if (isMoving && p.grounded) { const t = Date.now() * 0.015; p.mesh.userData.ll.rotation.x = Math.sin(t) * 0.5; p.mesh.userData.rl.rotation.x = -Math.sin(t) * 0.5; p.mesh.userData.la.rotation.x = -Math.sin(t) * 0.5; p.mesh.userData.ra.rotation.x = Math.sin(t) * 0.5; } else { p.mesh.userData.ll.rotation.x *= 0.8; p.mesh.userData.rl.rotation.x *= 0.8; p.mesh.userData.la.rotation.x *= 0.8; p.mesh.userData.ra.rotation.x *= 0.8; }
+        p.mesh.position.copy(p.pos); p.mesh.rotation.y = p.rot + Math.PI; window.Engine.camera.position.set(p.pos.x + Math.sin(p.rot) * 10, p.pos.y + 5, p.pos.z + Math.cos(p.rot) * 10); window.Engine.camera.lookAt(p.pos.x, p.pos.y + 2, p.pos.z);
+        if (State.netEnabled && Date.now() % 100 < 20) window.Engine.netSync();
+        window.Engine.remotePlayers.forEach(rp => { rp.mesh.position.lerp(rp.targetPos, 0.2); rp.mesh.rotation.y = rp.rot + Math.PI; });
+        window.Engine.renderer.render(window.Engine.scene, window.Engine.camera);
       },
-      toggleMenu: () => { State.menuOpen = !State.menuOpen; const el = document.getElementById('esc-menu'); if (State.menuOpen) { el.classList.remove('hidden'); if(document.pointerLockElement) document.exitPointerLock(); } else { el.classList.add('hidden'); } },
-      setSens: (val) => { State.settings.sens = val * 0.0005; },
-      initThree: () => {
-        const vp = document.getElementById('viewport'); window.Engine.scene = new THREE.Scene(); window.Engine.scene.background = new THREE.Color(CONFIG.colors.sky); window.Engine.scene.fog = new THREE.Fog(CONFIG.colors.sky, 20, 150); window.Engine.camera = new THREE.PerspectiveCamera(CONFIG.fov, window.innerWidth / window.innerHeight, 0.1, 1000); window.Engine.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' }); window.Engine.renderer.setSize(window.innerWidth, window.innerHeight); window.Engine.renderer.shadowMap.enabled = true; vp.appendChild(window.Engine.renderer.domElement); const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6); window.Engine.scene.add(hemi); const dir = new THREE.DirectionalLight(0xffffff, 0.8); dir.position.set(50, 100, 50); dir.castShadow = true; dir.shadow.mapSize.set(2048, 2048); window.Engine.scene.add(dir); window.Engine.light = dir; window.addEventListener('resize', () => { window.Engine.camera.aspect = window.innerWidth / window.innerHeight; window.Engine.camera.updateProjectionMatrix(); window.Engine.renderer.setSize(window.innerWidth, window.innerHeight); });
+      action: () => {
+        if (!window.Engine.player) return; const item = State.inventory[State.equippedIdx]; if (!item) return;
+        if (item.id === 'gn') { window.Engine.toast('Pew!', 'cyan'); }
       },
-      buildWorld: (type) => {
-        const tex = new THREE.TextureLoader().load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/terrain/grasslight-big.jpg'); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(50, 50); const floor = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), new THREE.MeshStandardMaterial({ map: tex, color: 0x555555 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; window.Engine.scene.add(floor); const addBlock = (x, y, z, w, h, d, color, isKill=false) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), new THREE.MeshStandardMaterial({color})); m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true; window.Engine.scene.add(m); m.userData.aabb = new THREE.Box3().setFromObject(m); m.userData.kill = isKill; window.Engine.world.colliders.push(m); return m; };
-        if (type === 'city') { for(let i=0; i<20; i++) { const z = (i-10)*30; addBlock(40, 10, z, 30, 20, 20, 0xbdc3c7); addBlock(-40, 10, z, 30, 20, 20, 0x34495e); } } else if (type === 'obby') { addBlock(0,0.5,0, 10,1,10, 0xffffff); let cx=0, cy=2, cz=0; for(let i=0; i<50; i++) { cz -= 8 + Math.random()*2; cy += Math.random() * 2; if (i % 5 === 0) { const w = 4; const p = addBlock(cx, cy, cz, w, 0.5, w, 0xf1c40f); window.Engine.world.movingParts.push({ mesh: p, start: cx, range: 10, speed: 0.05 + Math.random()*0.05, offset: Math.random()*Math.PI }); window.Engine.world.colliders.pop(); } else { const isKill = Math.random() < 0.3; addBlock(cx, cy, cz, 4, 0.5, 4, isKill ? 0xff4757 : 0x3498db, isKill); } } }
+      respawn: () => {
+        window.Engine.player.pos.set(0, 20, 0); window.Engine.player.vel.set(0,0,0); window.Engine.player.health = 100;
+        document.getElementById('esc-menu').classList.add('hidden'); State.menuOpen = false; if(document.body.requestPointerLock) document.body.requestPointerLock();
+        window.Engine.toast("Oof! You died.", "red");
       },
-      createPlayer: () => { /* ... existing code ... */ const grp = new THREE.Group(); const mat = (c) => new THREE.MeshStandardMaterial({color:c}); const isGirl = State.avatar.gender === 'girl'; const head = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), mat(State.avatar.skin)); head.position.y=1.5; const bodyW = isGirl ? 1.5 : 2; const bodyCol = mat(State.avatar.torso); const body = new THREE.Mesh(new THREE.BoxGeometry(bodyW,2,1), bodyCol); body.position.y=0; const armX = isGirl ? 1.1 : 1.4; const la = new THREE.Mesh(new THREE.BoxGeometry(0.8,2,0.8), mat(State.avatar.skin)); la.position.set(-armX,0,0); const ra = new THREE.Mesh(new THREE.BoxGeometry(0.8,2,0.8), mat(State.avatar.skin)); ra.position.set(armX,0,0); const legX = isGirl ? 0.4 : 0.5; const ll = new THREE.Mesh(new THREE.BoxGeometry(0.9,2,0.9), mat(State.avatar.legs)); ll.position.set(-legX,-2,0); const rl = new THREE.Mesh(new THREE.BoxGeometry(0.9,2,0.9), mat(State.avatar.legs)); rl.position.set(legX,-2,0); [head,body,la,ra,ll,rl].forEach(m=>m.castShadow=true); grp.add(head,body,la,ra,ll,rl); grp.userData = { la, ra, ll, rl }; grp.position.y = 3; window.Engine.scene.add(grp); window.Engine.player = { mesh: grp, pos: new THREE.Vector3(0,10,0), vel: new THREE.Vector3(), rot: 0, grounded: false, health: 100 }; },
-      sendChat: () => { const i = document.getElementById('chat-input'); const rawMsg = i.value.trim(); if(!rawMsg) return; i.value = ''; const score = Sentinel.checkToxicity(rawMsg); if (score > 0) { Sentinel.punish("Harassment"); return; } const msg = Sentinel.filter(rawMsg); const f = document.getElementById('chat-feed'); const m = document.createElement('div'); m.innerHTML = `<span style="opacity:0.6;font-weight:bold">${State.user}:</span> ${msg}`; f.appendChild(m); f.scrollTop = f.scrollHeight; },
-      renderHotbar: () => { document.getElementById('hotbar-container').innerHTML = ''; },
-      equip: () => {},
-      toast: (msg, color) => { const area = document.getElementById('toast-area'); if(!area) return; const el = document.createElement('div'); el.className = `bg-black/70 border border-white/20 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg animate-bounce`; el.style.borderColor = color; el.innerText = msg; area.appendChild(el); setTimeout(() => el.remove(), 2000); },
-      renderNametags: () => { const layer = document.getElementById('nametag-layer'); layer.innerHTML = ''; window.Engine.remotePlayers.forEach((rp, id) => { const p = rp.mesh.position.clone().add(new THREE.Vector3(0, 4, 0)); p.project(window.Engine.camera); const x = (p.x * .5 + .5) * window.innerWidth; const y = (-(p.y * .5) + .5) * window.innerHeight; if(p.z < 1) { const el = document.createElement('div'); el.className = 'nametag'; el.style.left = x+'px'; el.style.top = y+'px'; el.innerText = "Player"; layer.appendChild(el); } }); },
-      connect: () => {}, // Simplified for space
-      netSync: () => {}
+      interact: () => { /* Placeholder */ },
+      renderHotbar: () => {
+        const el = document.getElementById('hotbar-container'); el.innerHTML = '';
+        State.inventory.forEach((item, i) => { const slot = document.createElement('div'); slot.className = 'hotbar-slot'; slot.onclick = () => window.Engine.equip(i); slot.innerHTML = `<span class="hotbar-key">${i+1}</span>${item.icon}`; slot.id = `slot-${i}`; el.appendChild(slot); });
+      },
+      equip: (idx) => {
+        State.equippedIdx = idx; document.querySelectorAll('.hotbar-slot').forEach(e => e.classList.remove('active')); const active = document.getElementById(`slot-${idx}`); if(active) active.classList.add('active'); const item = State.inventory[idx]; if(item) window.Engine.toast(`Equipped: ${item.name}`, 'white');
+      },
+      toast: (msg, color) => {
+        const area = document.getElementById('toast-area'); if(!area) return; const el = document.createElement('div'); el.className = `bg-black/70 border border-white/20 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg animate-bounce`; el.style.borderColor = color; el.innerText = msg; area.appendChild(el); setTimeout(() => el.remove(), 2000);
+      },
+      netSync: () => {
+        if (!window.Engine.player) return; const p = window.Engine.player; const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', State.uid);
+        setDoc(docRef, { x: p.pos.x, y: p.pos.y, z: p.pos.z, rot: p.rot, name: State.user, skin: State.avatar.skin, torso: State.avatar.torso, legs: State.avatar.legs, ts: Date.now(), gid: State.currentId || 0 }, { merge: true }).catch(e => console.error(e));
+      },
+      sendChat: () => {
+        const i = document.getElementById('chat-input'); const rawMsg = i.value.trim(); if(!rawMsg) return; i.value = '';
+        const f = document.getElementById('chat-feed'); const m = document.createElement('div'); m.innerHTML = `<span style="opacity:0.6;font-weight:bold">${State.user}:</span> ${rawMsg}`; f.appendChild(m); f.scrollTop = f.scrollHeight;
+      },
+      updateHealthUI: () => {
+        const valEl = document.getElementById('hp-val'); const barEl = document.getElementById('hp-bar'); if (valEl) valEl.innerText = Math.ceil(window.Engine.player.health); if (barEl) barEl.style.width = window.Engine.player.health + '%';
+      },
+      connect: (gid) => {
+        const playerRef = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+        const unsub = onSnapshot(playerRef, (snap) => {
+          let count = 0; const now = Date.now(); window.Engine.updateLeaderboard(snap, now, gid);
+          snap.forEach(d => {
+            const data = d.data(); if (d.id === State.uid) return; if (now - data.ts > 10000) return; if (data.gid !== gid) return;
+            count++;
+            if (window.Engine.remotePlayers.has(d.id)) { const rp = window.Engine.remotePlayers.get(d.id); rp.targetPos.set(data.x, data.y, data.z); rp.rot = data.rot;
+            } else { const mesh = window.Engine.createRemoteChar(data.skin, data.torso, data.legs); window.Engine.scene.add(mesh); window.Engine.remotePlayers.set(d.id, { mesh, targetPos: new THREE.Vector3(data.x, data.y, data.z), rot: data.rot }); window.Engine.toast(data.name + " joined", "blue"); }
+          });
+          document.getElementById('online-count').innerText = count + 1;
+        });
+        window.Engine.listeners.push(unsub);
+        const chatRef = collection(db, 'artifacts', appId, 'public', 'data', 'chat');
+        const chatUnsub = onSnapshot(chatRef, (snap) => {
+          snap.docChanges().forEach(c => {
+            if (c.type === 'added') {
+              const d = c.doc.data();
+              if (d.gid === gid && d.uid !== State.uid && Date.now() - d.ts < 20000) { const f = document.getElementById('chat-feed'); const m = document.createElement('div'); m.innerHTML = `<span style="color:#00e085;font-weight:bold">${d.name}:</span> ${Sentinel.filter(d.msg)}`; f.appendChild(m); f.scrollTop = f.scrollHeight; }
+            }
+          });
+        });
+        window.Engine.listeners.push(chatUnsub);
+      },
+      updateLeaderboard: (snap, now, gid) => {
+        const list = document.getElementById('leaderboard'); list.innerHTML = `<li>👤 ${State.user} (You)</li>`;
+        snap.forEach(d => { const data = d.data(); if (d.id !== State.uid && data.gid === gid && now - data.ts < 10000) { const li = document.createElement('li'); li.innerText = `👤 ${data.name}`; list.appendChild(li); } });
+      },
+      createRemoteChar: (skin, torso, legs) => {
+        const grp = new THREE.Group(); const mat = (c) => new THREE.MeshStandardMaterial({color:c});
+        grp.add(new THREE.Mesh(new THREE.BoxGeometry(1,1,1), mat(skin || '#fff')));
+        const b = new THREE.Mesh(new THREE.BoxGeometry(2,2,1), mat(torso || '#888')); b.position.y=-1.5; grp.add(b);
+        grp.position.y = 3; return grp;
+      }
     };
+    document.addEventListener('mousemove', (e) => { if (document.pointerLockElement && window.Engine.player) { window.Engine.player.rot -= e.movementX * State.settings.sens; } });
     
     window.App = window.App; 
+    
     window.App.init();
   </script>
 </body>
